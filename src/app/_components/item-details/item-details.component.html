@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand " href="#">
+            <strong style="color: white">SENTRY</strong>
+        </a>
+    </div>
+</nav>
+
+
+<div class="container mt-4">
+    <div class="card" style="width: 18rem;">
+        <img [src]="item.itemImage" class="card-img-top" alt="image">
+        <div class="card-body">
+            <h5 class="card-title">{{item.itemName}}</h5>
+            <p class="card-text">
+                <strong>Item ID :</strong> {{item.itemId}}<br>
+                <strong>Item Description :</strong> {{item.itemDesc}}<br>
+                <strong>Item Cost Price :</strong> {{item.itemCP}}<br>
+                <strong>Item Selling Price :</strong> {{item.itemSP}}
+            </p>
+        </div>
+    </div>
+</div>

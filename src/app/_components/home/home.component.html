@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand " href="#">
+            <strong style="color: white">SENTRY</strong>
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1>Create a batch</h1>
+    <form [formGroup]="batchForm" class="mt-4 mb-4 d-flex justify-content-center align-items-center">
+        <label for="batchNum" class="form-label">Batch Number: </label>
+        <input type="number" id="batchNum" class="form-control mx-3" formControlName="batchNum" style="width: 300px;">
+        <button class="btn btn-primary mt-2" (click)="createBatch()">Create Batch</button>
+    </form>
+<hr>
+    <div style="margin-top: 40px;">
+        <div *ngFor="let batch of batches">
+            <div class="list-group mt-1">
+                <button type="button" (click)="openBatch(batch.batchNum)"
+                    class="list-group-item list-group-item-action"><strong>Batch {{batch.batchNum}}</strong> <br> <span style="font-size: smaller;"> Created on:
+                        {{batch.createdOn}}</span></button>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand " href="#">
+            <strong style="color: white">SENTRY</strong>
+        </a>
+    </div>
+</nav>
+
+
+<div class="container mt-4">
+    <h2>Batch Details</h2>
+    <p>Batch {{batchNum}}</p>
+
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-primary" (click)="handleAddButton()">Add new Item</button>
+    </div>
+
+    <form [formGroup]="itemForm" *ngIf="addItem">
+        <div class="mb-3">
+            <label for="itemId" class="form-label">Enter Custom Id</label>
+            <input type="text" class="form-control" id="itemId" formControlName="itemId">
+        </div>
+        <div class="mb-3">
+            <label for="itemName" class="form-label">Item Name</label>
+            <input type="text" class="form-control" id="itemName" formControlName="itemName">
+        </div>
+        <div class="mb-3">
+            <label for="itemDesc" class="form-label">Description</label>
+            <textarea type="text" class="form-control" id="itemDesc" formControlName="itemDesc"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="itemCP" class="form-label">Cost Price</label>
+            <input type="number" class="form-control" id="itemCP" formControlName="itemCP">
+        </div>
+        <div class="mb-3">
+            <label for="itemSP" class="form-label">Selling Price</label>
+            <input type="number" class="form-control" id="itemSP" formControlName="itemSP">
+        </div>
+        <div class="mb-3">
+            <label for="itemImage" class="form-label">Image</label>
+            <input type="file" class="form-control" id="itemImage" accept="image/jpeg, image/jpg, image/png"
+                (change)="onFileSelected($event)">
+        </div>
+        <button class="btn btn-primary mx-3 mt-1" (click)="onSubmit()" style="padding-inline: 130px;">Submit</button>
+        <button class="btn btn-secondary mx-3 mt-1" (click)="onClose()" style="padding-inline: 140px;">Close</button>
+    </form>
+
+    <hr>
+
+    <div *ngFor="let item of items" style="margin-top: 70px;">
+        <div class="list-group">
+            <button type="button" (click)="openItem(item.itemId)"
+                class="list-group-item list-group-item-action">{{item.itemId}} | {{item.itemName}}</button>
+        </div>
+    </div>
+</div>
