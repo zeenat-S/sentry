@@ -1,13 +1,4 @@
 {
-  "targets": {
-    "sentry-d39de": {
-      "hosting": {
-        "sentry": [
-          "sentry-d39de"
-        ]
-      }
-    }
-  },
   "projects": {
     "default": "sentry-d39de"
   }
