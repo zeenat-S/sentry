@@ -1,8 +1,8 @@
 {
   "hosting": [
     {
+      "public": "dist/sentry",
       "target": "sentry",
-      "source": ".",
       "frameworksBackend": {}
     }
   ]

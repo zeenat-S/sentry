@@ -29,8 +29,14 @@ export class BatchDetailComponent implements OnInit {
   imageUrl: any
   items: Item[] = []
   addItem = false;
+  itemSP: number[] = []
+  itemCP: number[] = []
+  totalSP = 0;
+  totalCP = 0;
+  totalProfit = 0;
 
-  constructor(private firestore: AngularFirestore, private storage: AngularFireStorage, private route: ActivatedRoute, private batchService: BatchesService, private add: AddDataService, private router: Router) { }
+  constructor(private firestore: AngularFirestore, private storage: AngularFireStorage, private route: ActivatedRoute, private batchService: BatchesService, private add: AddDataService, private router: Router) { 
+ }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -40,6 +46,11 @@ export class BatchDetailComponent implements OnInit {
     this.batchService.getBatch(Number(this.batchNum)).then(id => {
       this.firestore.collection("batches").doc(id).collection<Item>('items').valueChanges().subscribe(data => {
         this.items = data;
+        for (let item of data) {
+          this.totalSP += item.itemSP
+          this.totalCP += item.itemCP
+        }
+        this.totalProfit = this.totalSP-this.totalCP
       })
     })
   }
@@ -83,6 +94,7 @@ export class BatchDetailComponent implements OnInit {
               this.add.addItem(item, this.batchDocID);
               console.log(this.batchDocID)
               console.log(this.imageUrl)
+              this.itemForm.reset();
             });
           }
         },
@@ -104,7 +116,7 @@ export class BatchDetailComponent implements OnInit {
   async openItem(itemId: string) {
     try {
       const query = await this.firestore.collection<Batch>('batches').doc(this.batchDocID).collection<Item>('items', ref => ref.where('itemId', '==', itemId)).get().toPromise();
-      if(query?.empty) {
+      if (query?.empty) {
         console.log("No document found");
         return;
       }
@@ -114,7 +126,8 @@ export class BatchDetailComponent implements OnInit {
       const batch = this.batchDocID
       this.router.navigate(['/item-details', docId, batch])
     } catch (error) {
-      console.log("error getting batch Id: "+error)
+      console.log("error getting batch Id: " + error)
     }
   }
+
 }

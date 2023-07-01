@@ -9,7 +9,10 @@
 
 <div class="container mt-4">
     <h2>Batch Details</h2>
-    <p>Batch {{batchNum}}</p>
+    <h5>Batch {{batchNum}}</h5>
+    <p>Total Selling Price : {{totalSP}}</p>
+    <p>Total Profit : {{totalProfit}}</p>
+    
 
     <div class="d-flex justify-content-center">
         <button class="btn btn-primary" (click)="handleAddButton()">Add new Item</button>
@@ -47,8 +50,8 @@
 
     <hr>
 
-    <div *ngFor="let item of items" style="margin-top: 70px;">
-        <div class="list-group">
+    <div style="margin-top: 70px;">
+        <div class="list-group" *ngFor="let item of items">
             <button type="button" (click)="openItem(item.itemId)"
                 class="list-group-item list-group-item-action">{{item.itemId}} | {{item.itemName}}</button>
         </div>

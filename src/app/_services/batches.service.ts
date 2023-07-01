@@ -38,4 +38,14 @@ export class BatchesService {
       console.log("Batch success: Batch" + batchNum)
     ).catch((error) => console.log("failed: " + error))
   }
+
+  delete(batchNum: number) {
+      const itemCollection = this.firestore.collection('batches', ref => ref.where('batchNum', '==', batchNum));
+      itemCollection.get().toPromise().then(querySnapshot=>{
+        querySnapshot?.forEach(doc=>{
+          const itemRef = itemCollection.doc(doc.id);
+          itemRef.delete();
+        })
+      })
+  }
 }

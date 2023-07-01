@@ -14,12 +14,12 @@ export class HomeComponent implements OnInit {
 
   batches!: Batch[];
   docId!: string;
-
-  batchForm = new FormGroup(
-    {
-      batchNum : new FormControl('', Validators.required)
-    }
-  ) 
+  batchNum=0;
+  // batchForm = new FormGroup(
+  //   {
+  //     batchNum : new FormControl('', Validators.required)
+  //   }
+  // ) 
 
   constructor(private batchService: BatchesService, private firestore: AngularFirestore, private router: Router) { }
 
@@ -31,11 +31,15 @@ export class HomeComponent implements OnInit {
   }
 
   createBatch() {
-    this.batchService.createBatch(Number(this.batchForm.value.batchNum));
+    this.batchNum = this.batches.length+1;
+    this.batchService.createBatch(Number(this.batchNum));
   }
 
   openBatch(batchNum: number): void {
     this.router.navigate(['/batch', batchNum]);
   }
 
+  deleteBatch(batchNum: number) {
+    this.batchService.delete(batchNum)
+  }
 }
