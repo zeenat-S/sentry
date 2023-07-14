@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-primary">
+<nav class="navbar navbar-expand-lg bg-primary" id="printButton"> 
     <div class="container-fluid">
         <a class="navbar-brand " href="#">
             <strong style="color: white">SENTRY</strong>
@@ -8,14 +8,14 @@
 
 
 <div class="container mt-4">
-    <h2>Batch Details</h2>
+    <h2 id="printButton">Batch Details</h2>
     <h5>Batch {{batchNum}}</h5>
     <p>Total Selling Price : {{totalSP}}</p>
     <p>Total Profit : {{totalProfit}}</p>
-    
+
 
     <div class="d-flex justify-content-center">
-        <button class="btn btn-primary" (click)="handleAddButton()">Add new Item</button>
+        <button class="btn btn-primary" id="printButton" (click)="handleAddButton()">Add new Item</button>
     </div>
 
     <form [formGroup]="itemForm" *ngIf="addItem">
@@ -40,6 +40,10 @@
             <input type="number" class="form-control" id="itemSP" formControlName="itemSP">
         </div>
         <div class="mb-3">
+            <label for="quant" class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="quant" formControlName="quantity">
+        </div>
+        <div class="mb-3">
             <label for="itemImage" class="form-label">Image</label>
             <input type="file" class="form-control" id="itemImage" accept="image/jpeg, image/jpg, image/png"
                 (change)="onFileSelected($event)">
@@ -50,10 +54,65 @@
 
     <hr>
 
-    <div style="margin-top: 70px;">
-        <div class="list-group" *ngFor="let item of items">
-            <button type="button" (click)="openItem(item.itemId)"
-                class="list-group-item list-group-item-action">{{item.itemId}} | {{item.itemName}}</button>
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-primary" id="printButton" (click)="print()">Print</button>
+        <!-- <button class="btn btn-primary" printSection="print-section" ngxPrint>Print</button> -->
+    </div>
+
+    <div style="margin-top: 70px ; margin-bottom: 40px;">
+        <div class="container-fluid text-center" id="print-section">
+            <div class="row">
+                <div class="col grid p-2"><strong>Item Image</strong></div>
+                <div class="col grid p-2"><strong>Item ID</strong></div>
+                <div class="col grid p-2"><strong>Item Name</strong></div>
+                <div class="col grid p-2"><strong>Item Description</strong></div>
+                <div class="col grid p-2"><strong>Cost Price per Item</strong></div>
+                <div class="col grid p-2"><strong>Selling Price per Item</strong></div>
+                <div class="col grid p-2"><strong>Quantity</strong></div>
+                <div class="col grid p-2"><strong>Total Cost Price</strong></div>
+                <div class="col grid p-2"><strong>Total Selling Price</strong></div>
+                <div class="col grid p-2" id="printButton"><strong>Delete</strong></div>
+            </div>
+        </div>
+        <div class="container-fluid text-center" id="print-section">
+            <div class="row" *ngFor="let item of items">
+                <div class="col grid-child p-2"><img [src]="item.itemImage" class="img-thumbnail" alt="image"></div>
+                <div class="col grid-child p-2">{{item.itemId}}</div>
+                <div class="col grid-child p-2">{{item.itemName}}</div>
+                <div class="col grid-child p-2">{{item.itemDesc}}</div>
+                <div class="col grid-child p-2">{{item.itemCPSingle}}</div>
+                <div class="col grid-child p-2">{{item.itemSPSingle}}</div>
+                <div class="col grid-child p-2">{{item.quantity}}</div>
+                <div class="col grid-child p-2">{{item.itemCPTotal}}</div>
+                <div class="col grid-child p-2">{{item.itemSPTotal}}</div>
+                <div class="col grid-child p-2" id="printButton">
+                    <button class="btn btn-danger px-3" id="printButton" (click)="delete(item.itemId)"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-trash3" viewBox="0 0 16 16">
+                            <path
+                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                        </svg></button>
+                    <div>
+                        <button class="btn btn-secondary mt-2 px-3" id="printButton" (click)="edit(item.itemId)"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path
+                                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                            </svg></button>
+                    </div>
+                </div>
+                <div *ngIf="item.itemId===idEdit && openEdit" class="mt-2">
+                    <form>
+                        <input type="text" class="form-control" [formControl]="desc"
+                            placeholder="Enter new Item Description">
+                        <input type="text" class="form-control" [formControl]="cps"
+                            placeholder="Enter new Item Cost Price">
+                        <input type="text" class="form-control" [formControl]="sps"
+                            placeholder="Enter new Item Selling Price">
+                        <input type="text" class="form-control" [formControl]="quant"
+                            placeholder="Enter new Item Quantity">
+                        <button class="btn btn-success mt-2" (click)="save(item.itemId, batchDocID)">Save</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</div>

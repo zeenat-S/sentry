@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Batch } from '../_models/batch';
 import { Observable, map, tap } from 'rxjs';
+import { Item } from '../_models/item';
 
 @Injectable({
   providedIn: 'root'
@@ -47,5 +48,25 @@ export class BatchesService {
           itemRef.delete();
         })
       })
+  }
+
+  deleteItem(ItemId: any, batchDocId: any) {
+    const item = this.firestore.collection('batches').doc(batchDocId).collection('items', ref=> ref.where('itemId', '==', ItemId));
+    item.get().toPromise().then(querySnapshot=>{
+      querySnapshot?.forEach(doc=>{
+        const itemRef = item.doc(doc.id);
+        itemRef.delete();
+      })
+    })
+  }
+
+  updateItem(ItemId: any, batchDocId: any, newData: any) {
+    const item = this.firestore.collection('batches').doc(batchDocId).collection('items', ref=>ref.where('itemId', '==', ItemId));
+    item.get().toPromise().then(snapshot=>{
+      snapshot?.forEach(doc=>{
+        const itemRef = item.doc(doc.id)
+        itemRef.update(newData);
+      })
+    })
   }
 }

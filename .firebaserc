@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "sentry-d39de"
-  }
+    "default": "sentry-d39de",
+    "sentry": "sentry-d39de"
+  },
+  "targets": {},
+  "etags": {}
 }
