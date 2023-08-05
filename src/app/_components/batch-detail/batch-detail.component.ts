@@ -36,6 +36,7 @@ export class BatchDetailComponent implements OnInit {
   totalSP = 0;
   totalCP = 0;
   totalProfit = 0;
+  totalItems = 0
 
   constructor(private firestore: AngularFirestore,
     private storage: AngularFireStorage,
@@ -44,6 +45,22 @@ export class BatchDetailComponent implements OnInit {
     private add: AddDataService,
     private router: Router, 
     ) {
+      this.batchService.getBatch(Number(this.batchNum)).then(id => {
+        this.firestore.collection("batches").doc(id).collection<Item>('items').valueChanges().subscribe(data => {
+          this.items = data;
+          for ( let item of data) {
+            this.totalCP += item.itemCPTotal;
+            this.totalSP += item.itemSPTotal;
+            this.totalItems += item.quantity;
+          }
+          data.sort(function(a, b) {
+            var textA = a.itemId.toUpperCase();
+            var textB = b.itemId.toUpperCase();
+            return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+        });
+          this.totalProfit = this.totalSP - this.totalCP;
+        })
+      })
   }
 
   ngOnInit(): void {
@@ -51,21 +68,7 @@ export class BatchDetailComponent implements OnInit {
       this.batchNum = params['batchNum'];
       this.getBatchID(this.batchNum);
     })
-    this.batchService.getBatch(Number(this.batchNum)).then(id => {
-      this.firestore.collection("batches").doc(id).collection<Item>('items').valueChanges().subscribe(data => {
-        this.items = data;
-        for ( let item of data) {
-          this.totalCP += item.itemCPTotal;
-          this.totalSP += item.itemSPTotal;
-        }
-        data.sort(function(a, b) {
-          var textA = a.itemId.toUpperCase();
-          var textB = b.itemId.toUpperCase();
-          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-      });
-        this.totalProfit = this.totalSP - this.totalCP;
-      })
-    })
+    
   }
 
   show() {
