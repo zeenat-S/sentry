@@ -45,13 +45,17 @@ export class BatchDetailComponent implements OnInit {
     private add: AddDataService,
     private router: Router, 
     ) {
+      this.route.params.subscribe((params) => {
+        this.batchNum = params['batchNum'];
+        this.getBatchID(this.batchNum);
+      })
       this.batchService.getBatch(Number(this.batchNum)).then(id => {
         this.firestore.collection("batches").doc(id).collection<Item>('items').valueChanges().subscribe(data => {
           this.items = data;
           for ( let item of data) {
             this.totalCP += item.itemCPTotal;
             this.totalSP += item.itemSPTotal;
-            this.totalItems += item.quantity;
+            this.totalItems += Number(item.quantity);
           }
           data.sort(function(a, b) {
             var textA = a.itemId.toUpperCase();
@@ -64,10 +68,7 @@ export class BatchDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.batchNum = params['batchNum'];
-      this.getBatchID(this.batchNum);
-    })
+   
     
   }
 
