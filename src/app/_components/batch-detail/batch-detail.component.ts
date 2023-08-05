@@ -36,7 +36,8 @@ export class BatchDetailComponent implements OnInit {
   totalSP = 0;
   totalCP = 0;
   totalProfit = 0;
-  totalItems = 0
+  totalItems = 0;
+  showAdd = true;
 
   constructor(private firestore: AngularFirestore,
     private storage: AngularFireStorage,
@@ -184,6 +185,14 @@ export class BatchDetailComponent implements OnInit {
   
   print() {
     window.print();
+  }
+
+  done() {
+    this.showAdd = false
+  }
+
+  editPage() {
+    this.showAdd = true
   }
 
 }
