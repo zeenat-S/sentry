@@ -15,14 +15,12 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { BatchDetailComponent } from './_components/batch-detail/batch-detail.component';
 
 import { NgxPrintModule } from 'ngx-print';
-import { LoginComponent } from './_components/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     BatchDetailComponent,
-    LoginComponent,
   ],
   imports: [
     BrowserModule,
