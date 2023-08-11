@@ -20,7 +20,6 @@ export class BatchesService {
         console.log("No document found");
         return;
       }
-
       const doc = query?.docs[0];
       const docId = doc?.id;
       return docId;
@@ -33,7 +32,8 @@ export class BatchesService {
     const date = new Date().toLocaleDateString();
     const batch: Batch = {
       batchNum: batchNum,
-      createdOn: date
+      createdOn: date,
+      packageAmount: 0
     }
     this.firestore.collection<Batch>('batches').add(batch).then(() =>
       console.log("Batch success: Batch" + batchNum)

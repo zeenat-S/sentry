@@ -6,6 +6,7 @@ import { Item } from 'src/app/_models/item';
 import { AddDataService } from 'src/app/_services/add-data.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Batch } from 'src/app/_models/batch';
 
 
 
@@ -38,6 +39,8 @@ export class BatchDetailComponent implements OnInit {
   totalProfit = 0;
   totalItems = 0;
   showAdd = true;
+  batchDate = ""
+  packageCost = 0
 
   constructor(private firestore: AngularFirestore,
     private storage: AngularFireStorage,
@@ -49,6 +52,12 @@ export class BatchDetailComponent implements OnInit {
       this.route.params.subscribe((params) => {
         this.batchNum = params['batchNum'];
         this.getBatchID(this.batchNum);
+      })
+      this.batchService.getBatch(Number(this.batchNum)).then(id => {
+        this.firestore.collection<Batch>("batches").doc(id).valueChanges().subscribe(data => {
+          this.batchDate = String(data?.createdOn);
+          this.packageCost = Number(data?.packageAmount);
+        })
       })
       this.batchService.getBatch(Number(this.batchNum)).then(id => {
         this.firestore.collection("batches").doc(id).collection<Item>('items').valueChanges().subscribe(data => {
@@ -159,7 +168,9 @@ export class BatchDetailComponent implements OnInit {
   cps = new FormControl();
   sps = new FormControl();
   quant = new FormControl();
- 
+  packageCostForm = new FormControl();
+  editPackage = false;
+
   openEdit = false
   idEdit !: string
   edit(id: any) {
@@ -193,6 +204,15 @@ export class BatchDetailComponent implements OnInit {
 
   editPage() {
     this.showAdd = true
+  }
+
+  editPackageCost() {
+    this.editPackage = !this.editPackage;
+  }
+
+  savePackageAmount() {
+    this.firestore.collection<Batch>("batches").doc(this.batchDocID).update({packageAmount: Number(this.packageCostForm.value)})
+    this.editPackage = false;
   }
 
 }
