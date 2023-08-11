@@ -3,15 +3,17 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Batch } from '../_models/batch';
 import { Observable, map, tap } from 'rxjs';
 import { Item } from '../_models/item';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BatchesService {
 
+  sucess = false;
   // public docId: string | undefined;
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private router: Router) { }
 
   async getBatch(batchNum: number): Promise<any> {
     try {
@@ -68,5 +70,10 @@ export class BatchesService {
         itemRef.update(newData);
       })
     })
+  }
+
+  login() {
+    this.router.navigate(['/home']);
+    this.sucess = true;
   }
 }

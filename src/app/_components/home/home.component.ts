@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Batch } from 'src/app/_models/batch';
 import { BatchesService } from 'src/app/_services/batches.service';
@@ -14,32 +13,45 @@ export class HomeComponent implements OnInit {
 
   batches!: Batch[];
   docId!: string;
-  batchNum=0;
-  // batchForm = new FormGroup(
-  //   {
-  //     batchNum : new FormControl('', Validators.required)
-  //   }
-  // ) 
+  batchNum = 0;
+  loggedIn = this.batchService.sucess
 
-  constructor(private batchService: BatchesService, private firestore: AngularFirestore, private router: Router) { }
+  constructor(private batchService: BatchesService, private firestore: AngularFirestore, private router: Router) {
+    this.firestore.collection<Batch>('batches').valueChanges().subscribe((batches) => {
+      this.batches = batches;
+      batches.sort(function (a, b) {
+        var textA = a.batchNum;
+        var textB = b.batchNum;
+        return (textA > textB) ? -1 : (textA < textB) ? 1 : 0;
+      })
+    })
+  }
 
   ngOnInit(): void {
-    this.firestore.collection<Batch>('batches').valueChanges().subscribe((batches)=> {
-      this.batches = batches;
-    })
-
   }
 
   createBatch() {
-    this.batchNum = this.batches.length+1;
-    this.batchService.createBatch(Number(this.batchNum));
+    if (this.loggedIn) {
+      this.batchNum = this.batches.length + 1;
+      this.batchService.createBatch(Number(this.batchNum));
+    }
+    if (!this.loggedIn)
+      window.alert("Not Logged In")
   }
 
   openBatch(batchNum: number): void {
-    this.router.navigate(['/batch', batchNum]);
+    if (this.loggedIn)
+      this.router.navigate(['/batch', batchNum]);
+
+    if (!this.loggedIn)
+      window.alert("Not Logged In")
   }
 
   deleteBatch(batchNum: number) {
-    this.batchService.delete(batchNum)
+    if (this.loggedIn) {
+      this.batchService.delete(batchNum)
+    }
+    if (!this.loggedIn)
+    window.alert("Not Logged In")
   }
 }
