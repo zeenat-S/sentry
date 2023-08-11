@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './_components/home/home.component';
 import { environment } from '../environments/environment';
-import { ScreenTrackingService,UserTrackingService } from '@angular/fire/analytics';
+import { ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -25,7 +25,6 @@ import { NgxPrintModule } from 'ngx-print';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // NgbModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFireAuthModule,
@@ -34,7 +33,7 @@ import { NgxPrintModule } from 'ngx-print';
     NgxPrintModule
   ],
   providers: [
-    ScreenTrackingService,UserTrackingService
+    ScreenTrackingService, UserTrackingService
   ],
   bootstrap: [AppComponent]
 })
