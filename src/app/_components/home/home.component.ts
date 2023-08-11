@@ -14,7 +14,6 @@ export class HomeComponent implements OnInit {
   batches!: Batch[];
   docId!: string;
   batchNum = 0;
-  loggedIn = this.batchService.sucess
 
   constructor(private batchService: BatchesService, private firestore: AngularFirestore, private router: Router) {
     this.firestore.collection<Batch>('batches').valueChanges().subscribe((batches) => {
@@ -31,27 +30,20 @@ export class HomeComponent implements OnInit {
   }
 
   createBatch() {
-    if (this.loggedIn) {
+
       this.batchNum = this.batches.length + 1;
       this.batchService.createBatch(Number(this.batchNum));
-    }
-    if (!this.loggedIn)
-      window.alert("Not Logged In")
+
   }
 
   openBatch(batchNum: number): void {
-    if (this.loggedIn)
+   
       this.router.navigate(['/batch', batchNum]);
 
-    if (!this.loggedIn)
-      window.alert("Not Logged In")
   }
 
   deleteBatch(batchNum: number) {
-    if (this.loggedIn) {
+    
       this.batchService.delete(batchNum)
-    }
-    if (!this.loggedIn)
-    window.alert("Not Logged In")
   }
 }
